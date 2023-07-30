@@ -1,16 +1,59 @@
 import React from "react";
-import { Table as MuiTable } from "@mui/material";
+import {
+  Table as MuiTable,
+  TableBody,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
+import { StyledTableCell } from "./Table.styles";
+import IconButton from "../IconButton/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
-const IntelliTable = ({ children }) => {
+const Table = ({ rows, columns }) => {
+  console.log(rows);
   return (
     <TableContainer component={Paper}>
       <MuiTable sx={{ minWidth: 650 }} aria-label="simple table">
-        {children}
+        <TableHead>
+          <TableRow>
+            {columns.map((cols) => (
+              <StyledTableCell>{cols.label}</StyledTableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow
+              key={row.title}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              {columns.map((cols) => (
+                <>
+                  {cols.label !== "ACTIONS" ? (
+                    <StyledTableCell>
+                      {row[cols.label.toLowerCase()]}
+                    </StyledTableCell>
+                  ) : (
+                    <StyledTableCell align="left">
+                      <IconButton color="colors.lightGray">
+                        <VisibilityIcon />
+                      </IconButton>
+                      <IconButton color="colors.lightGray">
+                        <DeleteIcon />
+                      </IconButton>
+                    </StyledTableCell>
+                  )}
+                </>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
       </MuiTable>
     </TableContainer>
   );
-}
+};
 
-export default IntelliTable;
+export default Table;

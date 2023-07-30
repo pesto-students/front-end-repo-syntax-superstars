@@ -13,9 +13,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { StyledCardContent } from "./Project.styles";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Dropdown from "../../../components/Dropdown/Dropdown";
 import { SearchTextBox } from "../../../components/TextField/TextBox";
+import { Link } from "react-router-dom";
 
 const Project = () => {
   return (
@@ -42,46 +42,62 @@ const Project = () => {
               height: "100%",
               display: "flex",
               justifyContent: "center",
+              alignItems: "center",
+              "&.MuiCard-root > a": { textDecoration: "none" },
             }}
           >
-            <StyledCardContent>
-              <AddCircleIcon />
-              <Typography variant="h6">New Project</Typography>
-            </StyledCardContent>
+            <Link to="/document">
+              <StyledCardContent>
+                <AddCircleIcon />
+                <Typography variant="h6">New Project</Typography>
+              </StyledCardContent>
+            </Link>
           </Card>
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
-          <Card styles={{ height: "100%" }}>
-            <CardHeader
-              title={
-                <Typography variant="subtitle1" color="secondary">
-                  {" "}
-                  Untitled
+          <Card
+            styles={{
+              height: "100%",
+              "&.MuiCard-root > a": { textDecoration: "none" },
+            }}
+          >
+            <Link to="/document">
+              <CardHeader
+                title={
+                  <Typography variant="subtitle1" color="secondary">
+                    {" "}
+                    Untitled
+                  </Typography>
+                }
+              />
+              <Divider />
+              <CardContent sx={{ minHeight: "45px" }}>
+                <Typography variant="body1" color="secondary">
+                  2 documents
                 </Typography>
-              }
-            />
-            <Divider />
-            <CardContent sx={{ minHeight: "45px" }}>
-              <Typography variant="body1" color="secondary">
-                2 documents
-              </Typography>
-            </CardContent>
-            <Divider />
-            <CardActions sx={{ justifyContent: "space-between" }}>
-              <Chip content="1 week ago" color="primary" />
-              <div>
-                <IconButton>
-                  <DeleteIcon color="error" />
-                </IconButton>
-                <IconButton>
-                  <EditIcon color="info" />
-                </IconButton>
-              </div>
-            </CardActions>
+              </CardContent>
+              <Divider />
+              <CardActions sx={{ justifyContent: "space-between" }}>
+                <Chip content="1 week ago" color="primary" />
+                <div>
+                  <IconButton>
+                    <DeleteIcon color="error" />
+                  </IconButton>
+                  <IconButton>
+                    <EditIcon color="info" />
+                  </IconButton>
+                </div>
+              </CardActions>
+            </Link>
           </Card>
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
-          <Card styles={{ height: "100%" }}>
+          <Card
+            styles={{
+              height: "100%",
+              "&.MuiCard-root > a": { textDecoration: "none" },
+            }}
+          >
             <CardHeader
               title={
                 <Typography variant="subtitle1" color="secondary">

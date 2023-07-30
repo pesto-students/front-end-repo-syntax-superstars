@@ -40,6 +40,10 @@ export const lightTheme = createTheme({
     backgroundColor: "#FAFBFC",
   },
   typography: {
+    h3: {
+      fontSize: "24px",
+      fontWeight: 900,
+    },
     h4: {
       fontWeight: 700,
     },
@@ -59,7 +63,6 @@ export const lightTheme = createTheme({
     subtitle2: {
       fontSize: "16px",
       fontWeight: 700,
-      textDecorationLine: "underline",
     },
     subtitle1: {
       fontSize: "18px",

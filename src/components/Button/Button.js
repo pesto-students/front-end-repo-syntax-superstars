@@ -2,6 +2,7 @@ import React from "react";
 import Button from "@mui/material/Button";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { StyledButtonIcon } from "./Button.styles";
+import { Typography } from "@mui/material";
 
 const PrimaryButton = ({ label, height, width }) => (
   <Button
@@ -9,7 +10,7 @@ const PrimaryButton = ({ label, height, width }) => (
     color="primary"
     sx={{ height: height, width: width }}
   >
-    {label}
+    <Typography sx={{ fontWeight: 900 }}>{label}</Typography>
   </Button>
 );
 
@@ -33,6 +34,7 @@ const ButtonIcon = ({ label, ...rest }) => (
     variant="outlined"
     startIcon={<AccountCircleIcon />}
     {...rest}
+    color="secondary"
   >
     {label}
   </StyledButtonIcon>

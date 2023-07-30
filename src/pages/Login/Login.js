@@ -1,43 +1,61 @@
 import React from "react";
-import { Box, Checkbox, Divider, Grid } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  Divider,
+  FormControlLabel,
+  Grid,
+  Typography,
+} from "@mui/material";
 import logo from "../../images/logo.svg";
-import { ButtonIcon } from "../../components/Button/Button";
+import { ButtonIcon, PrimaryButton } from "../../components/Button/Button";
 import { TextBox } from "../../components/TextField/TextBox";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../Constants";
+import LandingPage from "../RightPane";
 
 const Login = () => {
+  const { REGISTER_ROUTE } = ROUTES;
   return (
-    <Grid container>
-      <Grid item xs={6} sx={{ backgroundColor: "primary.main" }}></Grid>
+    <LandingPage>
+      <Grid item xs={12}>
+        <TextBox label="Email"></TextBox>
+      </Grid>
+      <Grid item xs={12}>
+        <TextBox label="Password"></TextBox>
+      </Grid>
+      <Grid item xs={12}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked
+              // onChange={handleChange}
+              name="gilad"
+            />
+          }
+          label="Remember me"
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <PrimaryButton label="LOGIN" width="100%" height="50px" />
+      </Grid>
       <Grid
         item
-        xs={6}
-        container
-        sx={{ padding: "100px" }}
-        justifyContent="center"
+        xs={12}
+        sx={{ display: "flex", justifyContent: "space-between" }}
       >
-        <img src={logo} alt="logo" />
-        <Grid
-          item
-          xs={12}
-          container
-          justifyContent="space-between"
-          sx={{ marginTop: "30px" }}
-        >
-          <ButtonIcon label="Google" />
-          <ButtonIcon label="Guest User" />
-        </Grid>
-        <Divider sx={{ width: "100%", margin: "25px 0" }}>OR</Divider>
-        <Grid item xs={12} container rowSpacing={2}>
-          <Grid item xs={12}>
-            <TextBox label="Email"></TextBox>
-          </Grid>
-          <Grid item xs={12}>
-            <TextBox label="Password"></TextBox>
-          </Grid>
-          <Checkbox label="Remember me"></Checkbox>
-        </Grid>
+        <Link to="">
+          <Typography variant="body2" color="secondary.dark">
+            Forget Password
+          </Typography>
+        </Link>
+        <Link to={REGISTER_ROUTE}>
+          <Typography variant="body2" color="secondary.dark">
+            New User? Register
+          </Typography>
+        </Link>
       </Grid>
-    </Grid>
+    </LandingPage>
   );
 };
 

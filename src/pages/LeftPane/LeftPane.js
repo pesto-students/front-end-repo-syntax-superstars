@@ -7,7 +7,7 @@ import { LinearDeterminate } from "../../components/Progress/Progress";
 import logo from "../../images/logo.svg";
 import UpgradePlanCard from "./UpgradePlanCard/UpgradePlanCard";
 
-const LeftSidebar = () => {
+const LeftPane = () => {
   const drawerWidth = 350;
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -87,4 +87,4 @@ const LeftSidebar = () => {
   );
 };
 
-export default LeftSidebar;
+export default LeftPane;

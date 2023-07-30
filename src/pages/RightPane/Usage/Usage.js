@@ -1,12 +1,4 @@
-import {
-  Box,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Divider,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Box, CardContent, Grid, Typography } from "@mui/material";
 import Card from "../../../components/Card/Card";
 import Dropdown from "../../../components/Dropdown/Dropdown";
 

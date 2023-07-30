@@ -2,6 +2,9 @@ import HomeIcon from "@mui/icons-material/Home";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
+import DescriptionIcon from "@mui/icons-material/Description";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DataUsageIcon from "@mui/icons-material/DataUsage";
 
 export const ROUTES = {
   DASHBOARD_ROUTE: "/",
@@ -9,6 +12,8 @@ export const ROUTES = {
   DOCUMENTS_ROUTE: "/documents",
   USAGE_ROUTE: "/usage",
   PLAN_ROUTE: "/plan",
+  LOGIN_ROUTE: "/login",
+  REGISTER_ROUTE: "/register",
 };
 
 export const SIDEBAR = {
@@ -36,4 +41,21 @@ export const SIDEBAR = {
   ],
   CONTENT: "Get more scan & features",
   UPGRADE_NOW: "Upgrade Now",
+};
+
+export const DOCUMENT = {
+  tabsData: [
+    {
+      label: "Text Scan",
+      icon: () => <DescriptionIcon />,
+    },
+    {
+      label: "File Upload",
+      icon: () => <CloudUploadIcon />,
+    },
+    {
+      label: "Results",
+      icon: () => <DataUsageIcon />,
+    },
+  ],
 };
