@@ -1,5 +1,5 @@
 # IntelliPlagiarismAI
-# !(https://intelliplagiarismai.netlify.app/static/media/logo.068d1c0a3a0faaca586a6211a9140108.svg)
+#[LOGO] !(https://intelliplagiarismai.netlify.app/static/media/logo.068d1c0a3a0faaca586a6211a9140108.svg)
 
 > IntelliPlagiarismAI is a software solution designed to detect and identify instances of plagiarism in written content. The primary goal of this application is to assist users, such as students, researchers, and professionals, in maintaining academic integrity and ensuring the originality of their work.
 
@@ -13,7 +13,7 @@
 - [License](#-license)
 
 
-## Demo
+# Demo
 [Live Demo] (https://intelliplagiarismai.netlify.app/)
 
 ## Installation
