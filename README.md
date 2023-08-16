@@ -1,4 +1,3 @@
-# IntelliPlagiarismAI
 ![LOGO](./src/images/logo.svg)
 
 > IntelliPlagiarismAI is a software solution designed to detect and identify instances of plagiarism in written content. The primary goal of this application is to assist users, such as students, researchers, and professionals, in maintaining academic integrity and ensuring the originality of their work.
