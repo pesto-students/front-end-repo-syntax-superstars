@@ -1,5 +1,5 @@
 # IntelliPlagiarismAI
-#[LOGO](https://intelliplagiarismai.netlify.app/static/media/logo.068d1c0a3a0faaca586a6211a9140108.svg)
+[LOGO](https://intelliplagiarismai.netlify.app/static/media/logo.068d1c0a3a0faaca586a6211a9140108.svg)
 
 > IntelliPlagiarismAI is a software solution designed to detect and identify instances of plagiarism in written content. The primary goal of this application is to assist users, such as students, researchers, and professionals, in maintaining academic integrity and ensuring the originality of their work.
 
@@ -37,9 +37,9 @@ $ npm start
 This aplication uses the following open source packages:
 - [React](https://react.dev/)
 - [Material UI](https://mui.com/material-ui/)
-- [AXIOS](https://axios-http.com/)
-- [STRIPE](https://stripe.com/in)
-- [PREPOSTSEO](https://www.prepostseo.com/)
+- [Axios](https://axios-http.com/)
+- [Stripe](https://stripe.com/in)
+- [Prepostseo](https://www.prepostseo.com/)
 ## Author
 
 * [Archana Rangrej](https://github.com/ArchanaRangrej)
