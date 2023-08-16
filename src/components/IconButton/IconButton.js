@@ -1,8 +1,8 @@
 import React from "react";
 import { IconButton as MuiIconButton } from "@mui/material";
 
-const IconButton = ({ children, color }) => (
-  <MuiIconButton aria-label="delete" color={color}>
+const IconButton = ({ children, color, onClick, ...rest }) => (
+  <MuiIconButton aria-label="delete" color={color} onClick={onClick} {...rest}>
     {children}
   </MuiIconButton>
 );

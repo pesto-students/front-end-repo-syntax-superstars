@@ -12,8 +12,7 @@ import IconButton from "../IconButton/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
-const Table = ({ rows, columns }) => {
-  console.log(rows);
+const Table = ({ rows, columns, onDelete }) => {
   return (
     <TableContainer component={Paper}>
       <MuiTable sx={{ minWidth: 650 }} aria-label="simple table">
@@ -33,15 +32,16 @@ const Table = ({ rows, columns }) => {
               {columns.map((cols) => (
                 <>
                   {cols.label !== "ACTIONS" ? (
-                    <StyledTableCell>
-                      {row[cols.label.toLowerCase()]}
-                    </StyledTableCell>
+                    <StyledTableCell>{row[cols.field]}</StyledTableCell>
                   ) : (
                     <StyledTableCell align="left">
                       <IconButton color="colors.lightGray">
                         <VisibilityIcon />
                       </IconButton>
-                      <IconButton color="colors.lightGray">
+                      <IconButton
+                        color="colors.lightGray"
+                        onClick={() => onDelete(row._id)}
+                      >
                         <DeleteIcon />
                       </IconButton>
                     </StyledTableCell>

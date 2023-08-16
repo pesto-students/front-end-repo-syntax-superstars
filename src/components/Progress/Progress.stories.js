@@ -7,5 +7,5 @@ export default {
 
 export const Linear = () => <LinearDeterminate value={80} />;
 export const Circular = () => (
-  <CircularDeterminate value={75} />
+  <CircularDeterminate value={75} color="success" />
 );

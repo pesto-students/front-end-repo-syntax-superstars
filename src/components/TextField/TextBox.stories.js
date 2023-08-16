@@ -1,10 +1,8 @@
 import React from "react";
 import { SearchTextBox, TextBox } from "./TextBox";
 
-
 export default {
   title: "Textbox",
-  // component: Textbox,
 };
 
 export const Input = () => <TextBox label="Email" />;

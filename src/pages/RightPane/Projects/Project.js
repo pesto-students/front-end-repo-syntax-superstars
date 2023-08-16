@@ -1,162 +1,63 @@
-import {
-  CardActions,
-  CardContent,
-  CardHeader,
-  Divider,
-  Grid,
-  Typography,
-} from "@mui/material";
-import Card from "../../../components/Card/Card";
-import Chip from "../../../components/Chip/Chip";
-import IconButton from "../../../components/IconButton/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { StyledCardContent } from "./Project.styles";
+import { Grid } from "@mui/material";
+import { React, useEffect, useState } from "react";
+import { GET_PROJECTS_URL } from "../../../apis/apiRoutes";
 import Dropdown from "../../../components/Dropdown/Dropdown";
+import Loader from "../../../components/Loader/Loader";
 import { SearchTextBox } from "../../../components/TextField/TextBox";
-import { Link } from "react-router-dom";
+import useFetch from "../../../hooks/useFetch";
+import { getUser } from "../../../utils";
+import ProjectList from "./ProjectList";
 
 const Project = () => {
+  const { loading, error, apiCall } = useFetch();
+  const [projectsData, setProjectsData] = useState([]);
+  const [name, setName] = useState("");
+
+  const user = getUser();
+
+  const getProjects = async (name = "", sort = "") => {
+    const response = await apiCall(
+      `${GET_PROJECTS_URL}?name=${name}&sort=${sort}`,
+      {
+        method: "get",
+      }
+    );
+    setProjectsData(response?.data);
+  };
+
+  const handleChange = (event) => {
+    setName(event.target.value);
+    if (event.target.value.length > 3) {
+      getProjects(event.target.value);
+    }
+  };
+
+  const handleClick = (value) => {
+    getProjects(name, value);
+  };
+
+  useEffect(() => {
+    getProjects();
+  }, []);
+
   return (
     <>
+      {loading && <Loader />}
       <Grid
         container
         alignItems="center"
         sx={{
-          marginBottom: "25px",
+          marginBottom: "2.5rem",
         }}
       >
-        <Grid item xs={12} sx={{ mb: "20px" }}>
-          <SearchTextBox label="Search by name" />
+        <Grid item xs={12} sx={{ mb: "2rem" }}>
+          <SearchTextBox label="Search by name" onChange={handleChange} />
         </Grid>
         <Grid item xs={12} sx={{ textAlign: "right" }}>
-          <Dropdown title="Sort by Date Created" />
+          <Dropdown handleItemClick={handleClick} />
         </Grid>
       </Grid>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={4} md={3}>
-          <Card
-            styles={{
-              backgroundColor: "primary.main",
-              height: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              "&.MuiCard-root > a": { textDecoration: "none" },
-            }}
-          >
-            <Link to="/document">
-              <StyledCardContent>
-                <AddCircleIcon />
-                <Typography variant="h6">New Project</Typography>
-              </StyledCardContent>
-            </Link>
-          </Card>
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <Card
-            styles={{
-              height: "100%",
-              "&.MuiCard-root > a": { textDecoration: "none" },
-            }}
-          >
-            <Link to="/document">
-              <CardHeader
-                title={
-                  <Typography variant="subtitle1" color="secondary">
-                    {" "}
-                    Untitled
-                  </Typography>
-                }
-              />
-              <Divider />
-              <CardContent sx={{ minHeight: "45px" }}>
-                <Typography variant="body1" color="secondary">
-                  2 documents
-                </Typography>
-              </CardContent>
-              <Divider />
-              <CardActions sx={{ justifyContent: "space-between" }}>
-                <Chip content="1 week ago" color="primary" />
-                <div>
-                  <IconButton>
-                    <DeleteIcon color="error" />
-                  </IconButton>
-                  <IconButton>
-                    <EditIcon color="info" />
-                  </IconButton>
-                </div>
-              </CardActions>
-            </Link>
-          </Card>
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <Card
-            styles={{
-              height: "100%",
-              "&.MuiCard-root > a": { textDecoration: "none" },
-            }}
-          >
-            <CardHeader
-              title={
-                <Typography variant="subtitle1" color="secondary">
-                  {" "}
-                  Untitled
-                </Typography>
-              }
-            />
-            <Divider />
-            <CardContent sx={{ minHeight: "45px" }}>
-              <Typography variant="body1" color="secondary">
-                2 documents
-              </Typography>
-            </CardContent>
-            <Divider />
-            <CardActions sx={{ justifyContent: "space-between" }}>
-              <Chip content="1 week ago" color="primary" />
-              <div>
-                <IconButton>
-                  <DeleteIcon color="error" />
-                </IconButton>
-                <IconButton>
-                  <EditIcon color="info" />
-                </IconButton>
-              </div>
-            </CardActions>
-          </Card>
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <Card styles={{ height: "100%" }}>
-            <CardHeader
-              title={
-                <Typography variant="subtitle1" color="secondary">
-                  {" "}
-                  Untitled
-                </Typography>
-              }
-            />
-            <Divider />
-            <CardContent sx={{ minHeight: "45px" }}>
-              <Typography variant="body1" color="secondary">
-                2 documents
-              </Typography>
-            </CardContent>
-            <Divider />
-            <CardActions sx={{ justifyContent: "space-between" }}>
-              <Chip content="1 week ago" color="primary" />
-              <div>
-                <IconButton>
-                  <DeleteIcon color="error" />
-                </IconButton>
-                <IconButton>
-                  <EditIcon color="info" />
-                </IconButton>
-              </div>
-            </CardActions>
-          </Card>
-        </Grid>
-      </Grid>
+      <ProjectList projectsData={projectsData} getProjects={getProjects} />
     </>
   );
 };

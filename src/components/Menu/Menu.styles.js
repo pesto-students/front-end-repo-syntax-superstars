@@ -8,7 +8,7 @@ export const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   fontWeight: 900,
   fontSize: "13px",
   textDecorationLine: "unset",
-  "&.MuiMenuItem-root:hover": {
+  "&.MuiMenuItem-root.Mui-selected": {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
     ".MuiSvgIcon-root": {

@@ -1,16 +1,19 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Box } from "@mui/material";
+import React from "react";
+import { BrowserRouter, Route } from "react-router-dom";
+import { ROUTES } from "../pages/Constants";
 import Login from "../pages/Login/Login";
 import Registration from "../pages/Registration/Registration";
-import ProtectedRoute from "./ProtectedRoutes";
-import Project from "../pages/RightPane/Projects/Project";
 import Dashboard from "../pages/RightPane/Dashboard/Dashboard";
-import Documents from "../pages/RightPane/Documents/Documents";
 import Document from "../pages/RightPane/Document/Document";
-import Usage from "../pages/RightPane/Usage/Usage";
+import Documents from "../pages/RightPane/Documents/Documents";
 import Plans from "../pages/RightPane/Plans/Plans";
-import { ROUTES } from "../pages/Constants";
-import { Box } from "@mui/material";
-import { useState } from "react";
+import Profile from "../pages/RightPane/Profile/Profile";
+import Project from "../pages/RightPane/Projects/Project";
+import Usage from "../pages/RightPane/Usage/Usage";
+import { SentryRoutes } from "../sentry";
+import { getUser } from "../utils";
+import ProtectedRoute from "./ProtectedRoutes";
 
 const AppRoutes = () => {
   const {
@@ -18,21 +21,24 @@ const AppRoutes = () => {
     REGISTER_ROUTE,
     DASHBOARD_ROUTE,
     PROJECTS_ROUTE,
+    PROJECT_ROUTE,
     DOCUMENTS_ROUTE,
+    DOCUMENT_ROUTE,
     USAGE_ROUTE,
     PLAN_ROUTE,
+    PROFILE_ROUTE,
   } = ROUTES;
 
-  const [isSignedIn, setIsSignedIn] = useState(true);
+  const user = getUser();
 
   return (
     <BrowserRouter>
       <Box sx={{ width: "100%", height: "100vh", display: "flex" }}>
-        <Routes>
+        <SentryRoutes>
           <Route
             path={DASHBOARD_ROUTE}
             element={
-              <ProtectedRoute isSignedIn={isSignedIn}>
+              <ProtectedRoute user={user}>
                 <Dashboard />
               </ProtectedRoute>
             }
@@ -40,31 +46,41 @@ const AppRoutes = () => {
           <Route
             path={PROJECTS_ROUTE}
             element={
-              <ProtectedRoute isSignedIn={isSignedIn}>
+              <ProtectedRoute user={user}>
                 <Project />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={PROJECT_ROUTE}
+            element={
+              <ProtectedRoute user={user}>
+                <Document />
               </ProtectedRoute>
             }
           />
           <Route
             path={DOCUMENTS_ROUTE}
             element={
-              <ProtectedRoute isSignedIn={isSignedIn}>
+              <ProtectedRoute user={user}>
                 <Documents />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/document"
+            exact
+            path={DOCUMENT_ROUTE}
             element={
-              <ProtectedRoute isSignedIn={isSignedIn}>
+              <ProtectedRoute user={user}>
                 <Document />
               </ProtectedRoute>
             }
           />
           <Route
+            exact
             path={USAGE_ROUTE}
             element={
-              <ProtectedRoute isSignedIn={isSignedIn}>
+              <ProtectedRoute user={user}>
                 <Usage />
               </ProtectedRoute>
             }
@@ -72,16 +88,24 @@ const AppRoutes = () => {
           <Route
             path={PLAN_ROUTE}
             element={
-              <ProtectedRoute isSignedIn={isSignedIn}>
+              <ProtectedRoute user={user}>
                 <Plans />
               </ProtectedRoute>
             }
           />
-        </Routes>
-        <Routes>
+          <Route
+            path={PROFILE_ROUTE}
+            element={
+              <ProtectedRoute user={user}>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+        </SentryRoutes>
+        <SentryRoutes>
           <Route path={LOGIN_ROUTE} element={<Login />} />
           <Route path={REGISTER_ROUTE} element={<Registration />} />
-        </Routes>
+        </SentryRoutes>
       </Box>
     </BrowserRouter>
   );

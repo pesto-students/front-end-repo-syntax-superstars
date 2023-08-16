@@ -1,7 +1,7 @@
-import React from "react";
 import { Card as MuiCard } from "@mui/material";
+import React from "react";
 
-const Card = ({ children, styles }) => (
+const Card = ({ children, styles, onClick }) => (
   <MuiCard sx={{ borderRadius: "10px", ...styles }}>{children}</MuiCard>
 );
 

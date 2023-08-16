@@ -1,4 +1,7 @@
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import {
+  CardActionArea,
   CardActions,
   CardContent,
   CardHeader,
@@ -6,142 +9,187 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  DELETE_DOCUMENT_URL,
+  EDIT_DOCUMENT_URL,
+  GET_DOCUMENTS_URL,
+} from "../../../apis/apiRoutes";
 import Card from "../../../components/Card/Card";
 import Chip from "../../../components/Chip/Chip";
-import IconButton from "../../../components/IconButton/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import Dialog from "../../../components/Dialog/Dialog";
 import Dropdown from "../../../components/Dropdown/Dropdown";
+import IconButton from "../../../components/IconButton/IconButton";
+import Loader from "../../../components/Loader/Loader";
 import { SearchTextBox } from "../../../components/TextField/TextBox";
-import { Link } from "react-router-dom";
-import { ROUTES } from "../../Constants";
+import { AppContext } from "../../../context/AppContext";
+import useFetch from "../../../hooks/useFetch";
+import { MODAL, ROUTES } from "../../Constants";
+import { StyledTypography } from "./Documents.styles";
 
 const Documents = () => {
+  const { loading, apiCall } = useFetch();
+  const [documentsData, setDocumentsData] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [data, setData] = useState({});
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [name, setName] = useState("");
+  const { setDocument, setProject } = useContext(AppContext);
+  const navigate = useNavigate();
+
+  const getDocuments = async (name = "", sort = "") => {
+    const response = await apiCall(
+      `${GET_DOCUMENTS_URL}?name=${name}&sort=${sort}`,
+      {
+        method: "get",
+      }
+    );
+    if (response && response?.status === 200) {
+      if (response?.data?.length > 0) {
+        setDocumentsData(response?.data);
+      }
+    }
+  };
+
+  const handleClickOnDelete = (document) => {
+    setOpenModal(true);
+    setData(document);
+  };
+
+  const handleDelete = async () => {
+    const response = await apiCall(`${DELETE_DOCUMENT_URL}/${data._id}`, {
+      method: "delete",
+    });
+
+    if (response?.status === 200) {
+      setOpenModal(false);
+      setDocumentsData([]);
+      getDocuments();
+    }
+  };
+
+  const handleClose = () => {
+    setOpenModal(false);
+    setIsEditModalOpen(false);
+  };
+
+  const handleClickOnEdit = (document) => {
+    setIsEditModalOpen(true);
+    setData(document);
+  };
+
+  const handleEdit = async (name) => {
+    const response = await apiCall(`${EDIT_DOCUMENT_URL}/${data._id}`, {
+      method: "put",
+      data: {
+        name,
+      },
+    });
+
+    if (response?.status === 200) {
+      setIsEditModalOpen(false);
+      getDocuments();
+    }
+  };
+
+  const handleDocumentClick = (document) => {
+    setDocument(document);
+    setProject(document.projectData);
+    const route = ROUTES.DOCUMENT_ROUTE;
+    const path = route.split(/:([a-zA-Z]*)/);
+    navigate(path[0] + document.project + path[2] + document._id);
+  };
+
+  const handleChange = (event) => {
+    setName(event.target.value);
+    if (event.target.value.length > 3) {
+      getDocuments(event.target.value);
+    }
+  };
+
+  const handleClick = (value) => {
+    getDocuments(name, value);
+  };
+
+  useEffect(() => {
+    getDocuments();
+  }, []);
+
   return (
     <>
+      {loading && <Loader />}
       <Grid
         container
         alignItems="center"
         sx={{
-          marginBottom: "25px",
+          marginBottom: "2.5rem",
         }}
       >
-        <Grid item xs={12} sx={{ mb: "20px" }}>
-          <SearchTextBox label="Type a document name" />
+        <Grid item xs={12} sx={{ mb: "2rem" }}>
+          <SearchTextBox label="Type a document name" onChange={handleChange} />
         </Grid>
         <Grid item xs={12} sx={{ textAlign: "right" }}>
-          <Dropdown title="Sort by Date Created" />
+          <Dropdown handleItemClick={handleClick} />
         </Grid>
       </Grid>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={4} md={3}>
-          <Card
-            styles={{
-              height: "100%",
-              "&.MuiCard-root > a": { textDecoration: "none" },
-            }}
-          >
-            <Link to="/document">
-              <CardHeader
-                title={
-                  <>
-                    <Typography variant="subtitle1" color="secondary">
-                      {" "}
-                      Untitled
-                    </Typography>
-                    <Typography variant="body2" color="secondary">
-                      Anonymous
-                    </Typography>
-                  </>
-                }
-              />
-              <Divider />
-              <CardContent>
-                <Typography variant="body1" color="secondary">
-                  2 documents
-                </Typography>
-              </CardContent>
-              <Divider />
-              <CardActions sx={{ justifyContent: "space-between" }}>
-                <Chip content="1 week ago" color="primary" />
-                <div>
-                  <IconButton>
-                    <DeleteIcon color="error" />
-                  </IconButton>
-                  <IconButton>
-                    <EditIcon color="info" />
-                  </IconButton>
-                </div>
-              </CardActions>
-            </Link>
-          </Card>
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <Card styles={{ height: "100%" }}>
-            <CardHeader
-              title={
-                <Typography variant="subtitle1" color="secondary">
-                  {" "}
-                  Untitled
-                </Typography>
-              }
-            />
-            <Divider />
-            <CardContent>
-              <Typography variant="body1" color="secondary">
-                2 documents
-              </Typography>
-            </CardContent>
-            <Divider />
-            <CardActions sx={{ justifyContent: "space-between" }}>
-              <Chip content="1 week ago" color="primary" />
-              <div>
-                <IconButton>
-                  <DeleteIcon color="error" />
-                </IconButton>
-                <IconButton>
-                  <EditIcon color="info" />
-                </IconButton>
-              </div>
-            </CardActions>
-          </Card>
-        </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-          <Card styles={{ height: "100%" }}>
-            <CardHeader
-              title={
-                <Typography variant="subtitle1" color="secondary">
-                  {" "}
-                  Untitled
-                </Typography>
-              }
-            />
-            <Divider />
-            <CardContent>
-              <Typography variant="body1" color="secondary">
-                In literary theory, a text is any object that can be "read",
-                whether this object is a work of literature, a street sign, an
-                arrangement of buildings on a city block, or styles of clothing.
-                It is a coherent set of signs that transmits some kind of
-                informative message.[1] This set of signs is considered in terms
-                of the informative message's content, rather than in terms...
-              </Typography>
-            </CardContent>
-            <Divider />
-            <CardActions sx={{ justifyContent: "space-between" }}>
-              <Chip content="untitled" color="primary" />
-              <div>
-                <IconButton>
-                  <DeleteIcon color="error" />
-                </IconButton>
-                <IconButton>
-                  <EditIcon color="info" />
-                </IconButton>
-              </div>
-            </CardActions>
-          </Card>
-        </Grid>
+        {documentsData &&
+          documentsData.map((document, index) => (
+            <Grid key={`document=${index}`} item xs={12} sm={4} md={3}>
+              <Card styles={{ height: "100%" }}>
+                <CardActionArea onClick={() => handleDocumentClick(document)}>
+                  <CardHeader
+                    title={
+                      <Typography variant="subtitle1" color="secondary">
+                        {document.name}
+                      </Typography>
+                    }
+                  />
+                  <Divider />
+                  <CardContent>
+                    <StyledTypography variant="body1" color="secondary">
+                      {document.text}
+                    </StyledTypography>
+                  </CardContent>
+                  <Divider />
+                </CardActionArea>
+                <CardActions sx={{ justifyContent: "space-between" }}>
+                  <Chip content={document?.projectData?.name} color="primary" />
+                  <div>
+                    <IconButton onClick={() => handleClickOnDelete(document)}>
+                      <DeleteIcon color="error" fontSize="large" />
+                    </IconButton>
+                    <IconButton onClick={() => handleClickOnEdit(document)}>
+                      <EditIcon color="info" fontSize="large" />
+                    </IconButton>
+                  </div>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
       </Grid>
+      {openModal && (
+        <Dialog
+          header={MODAL.DELETE_DOCUMENT}
+          content={MODAL.DELETE_DOCUMENT_MESSAGE}
+          open={openModal}
+          onDelete={handleDelete}
+          onClose={handleClose}
+          isDelete={true}
+        />
+      )}
+      {isEditModalOpen && (
+        <Dialog
+          header={MODAL.RENAME_PROJECT}
+          content={MODAL.RENAME_PROJECT_MESSAGE}
+          open={isEditModalOpen}
+          onEdit={handleEdit}
+          onClose={handleClose}
+          isEdit={true}
+          value={data?.name}
+        />
+      )}
     </>
   );
 };

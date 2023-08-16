@@ -1,21 +1,29 @@
-import React from "react";
-import Button from "@mui/material/Button";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { StyledButtonIcon } from "./Button.styles";
 import { Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import React from "react";
+import { StyledButtonIcon } from "./Button.styles";
 
-const PrimaryButton = ({ label, height, width }) => (
+const PrimaryButton = ({ label, height, width, ...rest }) => (
   <Button
     variant="contained"
     color="primary"
     sx={{ height: height, width: width }}
+    {...rest}
   >
     <Typography sx={{ fontWeight: 900 }}>{label}</Typography>
   </Button>
 );
 
-const SecondaryButton = ({ label }) => (
-  <Button variant="outlined">{label}</Button>
+const SecondaryButton = ({ label, ...rest }) => (
+  <Button
+    variant="outlined"
+    color="secondary"
+    size="large"
+    sx={{ fontWeight: 700, marginTop: "1rem" }}
+    {...rest}
+  >
+    {label}
+  </Button>
 );
 
 const SmallButton = ({ label, height }) => (
@@ -29,15 +37,15 @@ const SmallButton = ({ label, height }) => (
   </Button>
 );
 
-const ButtonIcon = ({ label, ...rest }) => (
+const ButtonIcon = ({ label, icon, ...rest }) => (
   <StyledButtonIcon
     variant="outlined"
-    startIcon={<AccountCircleIcon />}
+    startIcon={icon}
     {...rest}
     color="secondary"
   >
-    {label}
+    <Typography variant="subtitle2">{label}</Typography>
   </StyledButtonIcon>
 );
 
-export { PrimaryButton, SecondaryButton, SmallButton, ButtonIcon };
+export { ButtonIcon, PrimaryButton, SecondaryButton, SmallButton };

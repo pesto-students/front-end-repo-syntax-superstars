@@ -1,26 +1,59 @@
 import React from "react";
-import { InputAdornment, TextField } from "@mui/material";
+import { Controller } from "react-hook-form";
+import { InputAdornment, TextField, Typography } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-const TextBox = ({ onChange, label, value, error, rounded }) => (
-  <TextField
-    helperText={error ? error.message : null}
-    error={!!error}
-    onChange={onChange}
-    value={value}
-    fullWidth
-    hiddenLabel
-    placeholder={label}
-    variant="outlined"
-    sx={{
-      ".MuiOutlinedInput-notchedOutline": {
-        boxShadow: "0px 2px 5px 0px rgba(38, 51, 77, 0.03)",
-        ...(rounded && {
-          borderRadius: "30px",
-          border: "2px solid #F5F6F7",
-        }),
-      },
+const TextBox = ({
+  name,
+  control,
+  label,
+  rounded,
+  required,
+  type,
+  hidden,
+  pattern,
+}) => (
+  <Controller
+    name={name}
+    control={control}
+    rules={{
+      required: required,
+      pattern: pattern,
     }}
+    render={({
+      field: { onChange, value },
+      fieldState: { error },
+      formState,
+    }) => (
+      <TextField
+        helperText={
+          <Typography variant="body1">
+            {error ? error.message : null}
+          </Typography>
+        }
+        error={!!error}
+        onChange={onChange}
+        value={value}
+        type={type}
+        fullWidth
+        hiddenLabel
+        placeholder={label}
+        variant="outlined"
+        hidden={hidden}
+        sx={{
+          ".MuiOutlinedInput-notchedOutline": {
+            boxShadow: "0px 2px 5px 0px rgba(38, 51, 77, 0.03)",
+            ...(rounded && {
+              borderRadius: "30px",
+              border: "2px solid #F5F6F7",
+            }),
+          },
+          ".Mui-error": {
+            marginLeft: "unset",
+          },
+        }}
+      />
+    )}
   />
 );
 

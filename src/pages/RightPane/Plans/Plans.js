@@ -1,118 +1,169 @@
-import { CardActions, CardContent, Grid, Typography } from "@mui/material";
-import Card from "../../../components/Card/Card";
+import {
+  Alert,
+  CardActions,
+  CardContent,
+  Grid,
+  Typography,
+} from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import {
+  CREATE_SESSION_URL,
+  EDIT_PROFILE_URL,
+  GET_PLANS_URL,
+} from "../../../apis/apiRoutes";
 import { PrimaryButton } from "../../../components/Button/Button";
+import Card from "../../../components/Card/Card";
+import Loader from "../../../components/Loader/Loader";
+import { AppContext } from "../../../context/AppContext";
+import useFetch from "../../../hooks/useFetch";
+import { getUser, setUser } from "../../../utils";
 
 const Plans = () => {
-  const plan = {
-    title: "Essential",
-    monthly_amount: "$12",
-    yearly_amount: "$144",
-    description: "Text...",
+  const { loading, error, apiCall } = useFetch();
+  const [plansData, setPlansData] = useState([]);
+  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const { setUserData } = useContext(AppContext);
+
+  const user = getUser();
+
+  const getPlans = async () => {
+    const response = await apiCall(GET_PLANS_URL, {
+      method: "get",
+    });
+    if (response && response?.status === 200) {
+      if (response?.data?.length > 0) {
+        setPlansData(response?.data);
+      }
+    }
   };
 
+  const updatePlan = async (user) => {
+    const response = await apiCall(`${EDIT_PROFILE_URL}/${user._id}`, {
+      method: "put",
+      data: user,
+    });
+    if (response.status === 200) {
+      if (response?.data?.message) {
+        setUserData(response?.data?.user);
+        setUser(response?.data?.user);
+      }
+      return true;
+    } else {
+      console.log(error);
+    }
+  };
+
+  const handleClick = async (plan) => {
+    const response = await apiCall(CREATE_SESSION_URL, {
+      method: "post",
+      data: {
+        price_id: plan.price_id,
+      },
+    });
+
+    if (response?.status === 200) {
+      user.plan = plan._id;
+      const res = updatePlan(user);
+      if (res) {
+        window.location.href = response?.data?.url;
+      }
+    }
+  };
+
+  useEffect(() => {
+    getPlans();
+  }, []);
+
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+
+    if (query.get("success")) {
+      setMessage("Congratualtions! Successfully Upgrade the Plan.");
+    }
+
+    if (query.get("canceled")) {
+      setErrorMessage("Sorry! Subscription Canceled.");
+    }
+  }, []);
+
   return (
-    <Grid container>
-      <Grid item xs={12} sx={{ textAlign: "center", marginBottom: "40px" }}>
-        <Typography variant="h4" color="secondary">
-          Choose the Plan That Works For You
-        </Typography>
-        <Typography variant="h6" color="secondary.light">
-          Advanced Features and no hidden pricing
-        </Typography>
-      </Grid>
-      <Grid item xs={12} container spacing={4}>
-        <Grid item xs={12} sm={4}>
-          <Card styles={{ padding: "16px" }}>
-            <CardContent>
-              <Typography
-                variant="h6"
-                sx={{ textAlign: "center", mb: "18px", fontWeight: "bold" }}
-                color="text.title"
-              >
-                {plan.title}
-              </Typography>
-              <Typography
-                variant="h4"
-                sx={{ textAlign: "center", fontWeight: "bold" }}
-                color="text.title"
-              >
-                {plan.monthly_amount}/month
-              </Typography>
-              <Typography
-                sx={{ textAlign: "center", fontWeight: "bold" }}
-                color="text.main"
-              >
-                Billed {plan.yearly_amount}/year
-              </Typography>
-              <Typography sx={{ mt: "24px" }}>{plan.description}</Typography>
-            </CardContent>
-            <CardActions>
-              <PrimaryButton label="Get started" width="100%" />
-            </CardActions>
-          </Card>
+    <>
+      {loading && <Loader />}
+      <Grid container>
+        <Grid item xs={12} sx={{ textAlign: "center", marginBottom: "4rem" }}>
+          <Typography variant="h3" color="secondary">
+            Choose the Plan That Works For You
+          </Typography>
+          <Typography variant="h6" color="secondary.light">
+            Advanced Features and no hidden pricing
+          </Typography>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <Card styles={{ padding: "16px" }}>
-            <CardContent>
-              <Typography
-                variant="h6"
-                sx={{ textAlign: "center", mb: "18px", fontWeight: "bold" }}
-                color="text.title"
-              >
-                {plan.title}
-              </Typography>
-              <Typography
-                variant="h4"
-                sx={{ textAlign: "center", fontWeight: "bold" }}
-                color="text.title"
-              >
-                {plan.monthly_amount}/month
-              </Typography>
-              <Typography
-                sx={{ textAlign: "center", fontWeight: "bold" }}
-                color="text.main"
-              >
-                Billed {plan.yearly_amount}/year
-              </Typography>
-              <Typography sx={{ mt: "24px" }}>{plan.description}</Typography>
-            </CardContent>
-            <CardActions>
-              <PrimaryButton label="Get started" width="100%" />
-            </CardActions>
-          </Card>
+        <Grid item xs={12} sx={{ marginBottom: "2rem" }}>
+          {message && <Alert severity="success">{message}</Alert>}
+          {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <Card styles={{ padding: "16px" }}>
-            <CardContent>
-              <Typography
-                variant="h6"
-                sx={{ textAlign: "center", mb: "18px", fontWeight: "bold" }}
-                color="text.title"
-              >
-                {plan.title}
-              </Typography>
-              <Typography
-                variant="h4"
-                sx={{ textAlign: "center", fontWeight: "bold" }}
-                color="text.title"
-              >
-                {plan.monthly_amount}/month
-              </Typography>
-              <Typography
-                sx={{ textAlign: "center", fontWeight: "bold" }}
-                color="text.main"
-              >
-                Billed {plan.yearly_amount}/year
-              </Typography>
-              <Typography sx={{ mt: "24px" }}>{plan.description}</Typography>
-            </CardContent>
-            <CardActions>
-              <PrimaryButton label="Get started" width="100%" />
-            </CardActions>
-          </Card>
+        <Grid item xs={12} container spacing={4}>
+          {plansData &&
+            plansData.map((plan, index) => (
+              <Grid item xs={12} sm={4} key={`plan-${index}`}>
+                <Card
+                  styles={{
+                    padding: "1.6rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    height: "100%",
+                  }}
+                >
+                  <CardContent>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        textAlign: "center",
+                        mb: "1.8rem",
+                        fontWeight: "bold",
+                      }}
+                      color="text.title"
+                    >
+                      {plan.name}
+                    </Typography>
+                    <Typography
+                      variant="h4"
+                      sx={{ textAlign: "center", fontWeight: "bold" }}
+                      color="text.title"
+                    >
+                      {plan.monthly_rate}/month
+                    </Typography>
+                    <Typography
+                      sx={{ textAlign: "center", fontWeight: "bold" }}
+                      color="text.main"
+                    >
+                      Billed {plan.yearly_rate}/year
+                    </Typography>
+                    <Typography
+                      sx={{ mt: "2.4rem", fontWeight: 700, lineHeight: "2rem" }}
+                      color="text.main"
+                      variant="body2"
+                    >
+                      <span
+                        dangerouslySetInnerHTML={{ __html: plan.description }}
+                      />
+                    </Typography>
+                  </CardContent>
+                  <CardActions onClick={() => handleClick(plan)}>
+                    <PrimaryButton
+                      label="Get started"
+                      width="100%"
+                      height="4rem"
+                    />
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
         </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 

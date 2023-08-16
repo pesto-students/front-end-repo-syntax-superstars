@@ -5,7 +5,7 @@ const Chip = ({ content, color }) => (
   <MuiChip
     label={content}
     color={color}
-    sx={{ fontWeight: 'bold' }}
+    sx={{ fontWeight: "bold", fontSize: "1rem" }}
   ></MuiChip>
 );
 

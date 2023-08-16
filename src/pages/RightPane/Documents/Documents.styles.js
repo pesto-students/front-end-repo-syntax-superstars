@@ -1,4 +1,4 @@
-import { CardContent, styled } from "@mui/material";
+import { CardContent, Typography, styled } from "@mui/material";
 
 export const StyledCardContent = styled(CardContent)(({ theme }) => ({
   display: "flex",
@@ -8,3 +8,10 @@ export const StyledCardContent = styled(CardContent)(({ theme }) => ({
   color: theme.palette.white,
   fontWeight: "bold",
 }));
+
+export const StyledTypography = styled(Typography)({
+  overflow: "hidden",
+  display: "-webkit-box",
+  "-webkit-box-orient": "vertical",
+  "-webkit-line-clamp": "8",
+});

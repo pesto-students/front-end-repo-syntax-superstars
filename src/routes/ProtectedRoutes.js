@@ -1,9 +1,10 @@
+import { Box } from "@mui/material";
 import React from "react";
 import { Navigate } from "react-router-dom";
 import LeftPane from "../pages/LeftPane/LeftPane";
-import { Box } from "@mui/material";
-function ProtectedRoute({ isSignedIn, children }) {
-  if (!isSignedIn) {
+
+function ProtectedRoute({ user, children }) {
+  if (!user & !user?.isVerified) {
     return <Navigate to="/login" replace />;
   }
   return (

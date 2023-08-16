@@ -1,6 +1,15 @@
 import { createTheme } from "@mui/material";
 
 export const lightTheme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 769,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
   palette: {
     mode: "light",
     primary: {
@@ -41,13 +50,14 @@ export const lightTheme = createTheme({
   },
   typography: {
     h3: {
-      fontSize: "24px",
+      fontSize: "2.4rem",
       fontWeight: 900,
     },
     h4: {
       fontWeight: 700,
     },
     h5: {
+      fontSize: "2rem",
       fontWeight: 600,
     },
     h6: {
@@ -55,17 +65,17 @@ export const lightTheme = createTheme({
       fontSize: "1rem",
     },
     body2: {
-      fontSize: "12px",
+      fontSize: "1.2rem",
     },
     body1: {
-      fontSize: "14px",
+      fontSize: "1.4rem",
     },
     subtitle2: {
-      fontSize: "16px",
+      fontSize: "1.6rem",
       fontWeight: 700,
     },
     subtitle1: {
-      fontSize: "18px",
+      fontSize: "1.8rem",
       fontWeight: 900,
     },
     button: {

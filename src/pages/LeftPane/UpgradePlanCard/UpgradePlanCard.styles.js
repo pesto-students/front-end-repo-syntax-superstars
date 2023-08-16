@@ -1,7 +1,7 @@
 import { CardContent, styled } from "@mui/material";
 
 export const StyledCardContent = styled(CardContent)({
-  lineHeight: "25px",
+  lineHeight: "2.5rem",
   textAlign: "center",
   display: "flex",
   flexDirection: "column",
