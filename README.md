@@ -16,7 +16,7 @@
 # Demo
 [Live Demo] (https://intelliplagiarismai.netlify.app/)
 
-## Installation
+# Installation
 To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
 
 ```bash
@@ -33,7 +33,7 @@ $ npm install
 $ npm start
 ```
 
-## Technology Stack
+# Technology Stack
 This aplication uses the following open source packages:
 - [React] (https://react.dev/)
 - [Material UI] (https://mui.com/material-ui/)
