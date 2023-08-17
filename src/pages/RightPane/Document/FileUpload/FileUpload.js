@@ -45,9 +45,6 @@ const FileUpload = ({ handleScan }) => {
       method: "get",
     });
     if (response && response?.status === 200) {
-      if (documentsData.length === 0) {
-        await getDocuments();
-      }
       if (response?.data) {
         setDocument(response?.data);
       }
@@ -123,6 +120,9 @@ const FileUpload = ({ handleScan }) => {
   };
 
   useEffect(() => {
+    if (documentsData.length === 0) {
+      getDocuments();
+    }
     if (docId) {
       getDocumentsByDocId(docId);
     }

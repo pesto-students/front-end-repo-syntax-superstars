@@ -105,7 +105,7 @@ const LeftPane = () => {
             display: { xs: "block", sm: "none" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
-              width: "60%",
+              width: "25%",
               padding: "0 2rem",
             },
           }}

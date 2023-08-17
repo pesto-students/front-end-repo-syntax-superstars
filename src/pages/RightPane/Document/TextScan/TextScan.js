@@ -46,9 +46,6 @@ const TextScan = ({ handleScan }) => {
       method: "get",
     });
     if (response && response?.status === 200) {
-      if (documentsData.length === 0) {
-        await getDocuments();
-      }
       if (response?.data) {
         setDocument(response?.data);
       }
@@ -72,11 +69,11 @@ const TextScan = ({ handleScan }) => {
     },
     {
       label: "PALGIARISM",
-      field: "",
+      field: "reportData[0].plagPercent",
     },
     {
       label: "HUMAN_SCORE",
-      field: "",
+      field: "reportData[0].uniquePercent",
     },
     {
       label: "LANGUAGE",
@@ -89,10 +86,13 @@ const TextScan = ({ handleScan }) => {
   ];
 
   useEffect(() => {
-    if (docId) {
-      getDocumentsByDocId();
+    if (documentsData.length === 0) {
+      getDocuments();
+      if (docId) {
+        getDocumentsByDocId();
+      }
     }
-  }, [docId]);
+  }, [docId, documentsData]);
 
   useEffect(() => {
     if (state?.document && state?.document?.is_file === false) {

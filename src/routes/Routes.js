@@ -4,6 +4,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { ROUTES } from "../pages/Constants";
 import Login from "../pages/Login/Login";
+import NotFound from "../pages/NotFound";
 import Registration from "../pages/Registration/Registration";
 import Dashboard from "../pages/RightPane/Dashboard/Dashboard";
 import Document from "../pages/RightPane/Document/Document";
@@ -34,7 +35,7 @@ const AppRoutes = () => {
 
   const { state } = useContext(AppContext);
 
-  const [userData, setUserData] = useState();
+  const [userData, setUserData] = useState(user);
 
   useEffect(() => {
     if (state?.user) {
@@ -49,6 +50,7 @@ const AppRoutes = () => {
       <Box sx={{ width: "100%", height: "100vh", display: "flex" }}>
         <SentryRoutes>
           <Route
+            exact
             path={DASHBOARD_ROUTE}
             element={
               <ProtectedRoute user={userData}>
@@ -99,7 +101,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path={PLAN_ROUTE}
+            path={`${PLAN_ROUTE}*`}
             element={
               <ProtectedRoute user={userData}>
                 <Plans />
@@ -114,10 +116,9 @@ const AppRoutes = () => {
               </ProtectedRoute>
             }
           />
-        </SentryRoutes>
-        <SentryRoutes>
-          <Route path={LOGIN_ROUTE} element={<Login />} />
-          <Route path={REGISTER_ROUTE} element={<Registration />} />
+          <Route exact path="*" element={<NotFound />} />
+          <Route exact path={LOGIN_ROUTE} element={<Login />} />
+          <Route exact path={REGISTER_ROUTE} element={<Registration />} />
         </SentryRoutes>
       </Box>
     </BrowserRouter>

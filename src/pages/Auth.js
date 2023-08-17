@@ -2,7 +2,6 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CheckIcon from "@mui/icons-material/Check";
 import { Divider, Grid, List, ListItem, Typography } from "@mui/material";
 import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GOOGLE_LOGIN_URL } from "../apis/apiRoutes";
@@ -15,7 +14,7 @@ import { getUser, setUser } from "../utils";
 import { ROUTES } from "./Constants";
 
 const Auth = ({ children, setValue }) => {
-  const { apiCall } = useFetch();
+  const { apiCall, error } = useFetch();
   const navigate = useNavigate();
   const { state, setUserData } = useContext(AppContext);
   const [responseData, setResponse] = useState();
@@ -24,20 +23,9 @@ const Auth = ({ children, setValue }) => {
 
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      const res = await axios.get(
-        "https://www.googleapis.com/oauth2/v3/userinfo",
-        {
-          headers: {
-            Authorization: `Bearer ${tokenResponse.access_token}`,
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods":
-              "PUT, POST, GET, DELETE, PATCH, OPTIONS",
-          },
-        }
-      );
       const response = await apiCall(GOOGLE_LOGIN_URL, {
         method: "post",
-        data: res.data,
+        data: tokenResponse,
       });
 
       setResponse(response);
@@ -80,19 +68,19 @@ const Auth = ({ children, setValue }) => {
         <List dense>
           <ListItem>
             <Typography color="white" sx={{ fontWeight: 700 }}>
-              <CheckIcon sx={{ marginBottom: "-10px" }} />
+              <CheckIcon sx={{ marginBottom: "-0.4rem" }} />
               No credit cards required
             </Typography>
           </ListItem>
           <ListItem>
             <Typography color="white" sx={{ fontWeight: 700 }}>
-              <CheckIcon sx={{ marginBottom: "-10px" }} />
+              <CheckIcon sx={{ marginBottom: "-0.4rem" }} />
               Scan up to 2,000 words for free
             </Typography>
           </ListItem>
           <ListItem>
             <Typography color="white" sx={{ fontWeight: 700 }}>
-              <CheckIcon sx={{ marginBottom: "-10px" }} />
+              <CheckIcon sx={{ marginBottom: "-0.4rem" }} />
               Access the world's most reliable AI content detection tool
             </Typography>
           </ListItem>

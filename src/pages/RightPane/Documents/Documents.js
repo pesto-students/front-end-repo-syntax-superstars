@@ -103,7 +103,9 @@ const Documents = () => {
 
   const handleChange = (event) => {
     setName(event.target.value);
-    getDocuments(event.target.value);
+    if (event.target.value.length >= 3 || event.target.value.length === 0) {
+      getDocuments(event.target.value);
+    }
   };
 
   const handleClick = (value) => {
@@ -134,8 +136,15 @@ const Documents = () => {
       <Grid container spacing={3}>
         {documentsData &&
           documentsData.map((document, index) => (
-            <Grid key={`document=${index}`} item xs={12} sm={4} md={3}>
-              <Card styles={{ height: "100%" }}>
+            <Grid item key={`document=${index}`} xs={12} sm={4} md={3}>
+              <Card
+                styles={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
                 <CardActionArea onClick={() => handleDocumentClick(document)}>
                   <CardHeader
                     title={
@@ -145,13 +154,13 @@ const Documents = () => {
                     }
                   />
                   <Divider />
-                  <CardContent>
+                  <CardContent sx={{ minHeight: "16rem" }}>
                     <StyledTypography variant="body1" color="secondary">
                       {document.text}
                     </StyledTypography>
                   </CardContent>
-                  <Divider />
                 </CardActionArea>
+                <Divider />
                 <CardActions sx={{ justifyContent: "space-between" }}>
                   <Chip content={document?.projectData?.name} color="primary" />
                   <div>

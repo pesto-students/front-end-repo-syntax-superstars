@@ -64,6 +64,7 @@ const Plans = () => {
 
     if (response?.status === 200) {
       user.plan = plan._id;
+      user.creditsLeft = plan.credits;
       const res = updatePlan(user);
       if (res) {
         window.location.href = response?.data?.url;

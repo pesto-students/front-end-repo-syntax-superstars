@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getUser } from "../utils";
 
-const APP_BASE_URL = "https://intelliplagiarism-backend.onrender.com/api/";
+const APP_BASE_URL = "http://localhost:2000/api/";
 
 const user = getUser();
 

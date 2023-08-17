@@ -42,11 +42,11 @@ const Document = () => {
   };
 
   const handleScan = (document) => {
-    tabsData[tabsData.length - 1].show = true;
-    setValue(2);
     const route = ROUTES.DOCUMENT_ROUTE;
     const path = route.split(/:([a-zA-Z]*)/);
-    navigate(path[0] + document.project._id + path[2] + document._id);
+    navigate(path[0] + document.project + path[2] + document._id);
+    tabsData[tabsData.length - 1].show = true;
+    setValue(2);
   };
 
   const handleAddClick = () => {

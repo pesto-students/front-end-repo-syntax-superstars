@@ -49,7 +49,6 @@ const UserInfo = () => {
       setPlan(response?.data);
     } else {
       console.log(error);
-      handleLogout();
     }
   };
 
