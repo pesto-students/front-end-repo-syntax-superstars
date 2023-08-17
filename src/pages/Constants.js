@@ -13,7 +13,7 @@ export const ROUTES = {
   DOCUMENTS_ROUTE: "/documents",
   DOCUMENT_ROUTE: "/project/:id/document/:docId",
   USAGE_ROUTE: "/usage",
-  PLAN_ROUTE: "/plan",
+  PLAN_ROUTE: "/plan?*",
   LOGIN_ROUTE: "/login",
   REGISTER_ROUTE: "/register",
   PROFILE_ROUTE: "/profile",

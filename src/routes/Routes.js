@@ -101,7 +101,7 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path={`${PLAN_ROUTE}*`}
+            path={`${PLAN_ROUTE}`}
             element={
               <ProtectedRoute user={userData}>
                 <Plans />
