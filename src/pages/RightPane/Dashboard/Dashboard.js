@@ -5,15 +5,12 @@ import { Link } from "react-router-dom";
 import { GET_LATEST_PROJECTS_URL } from "../../../apis/apiRoutes";
 import Loader from "../../../components/Loader/Loader";
 import useFetch from "../../../hooks/useFetch";
-import { getUser } from "../../../utils";
 import { ROUTES } from "../../Constants";
 import ProjectList from "../Projects/ProjectList";
 
 const Dashboard = () => {
   const { loading, error, apiCall } = useFetch();
   const [projectsData, setProjectsData] = useState([]);
-
-  const user = getUser();
 
   const getLatestProjects = async () => {
     const response = await apiCall(GET_LATEST_PROJECTS_URL, {

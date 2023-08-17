@@ -111,11 +111,7 @@ const UserInfo = () => {
           <Grid container justifyContent="space-between">
             <Grid item container xs={11} justifyContent="flex-start">
               <Grid item xs={3}>
-                <Avatar
-                  sx={{ bgcolor: "secondary.main" }}
-                  variant="square"
-                  src={user?.profilePic}
-                ></Avatar>
+                <Avatar variant="square" src={user?.profilePic}></Avatar>
               </Grid>
               <Grid
                 item

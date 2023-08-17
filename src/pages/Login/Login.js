@@ -33,9 +33,14 @@ const Login = () => {
       data,
     });
     if (response?.status === 200) {
-      setUser(response?.data);
-      setUserData(response?.data);
-      navigate(ROUTES.DASHBOARD_ROUTE);
+      if (response?.data?.error || response?.data?.message) {
+        setErrorMessage(response?.data?.message);
+        setErrorMessage(response?.data?.error);
+      } else {
+        setUser(response?.data);
+        setUserData(response?.data);
+        navigate(ROUTES.DASHBOARD_ROUTE);
+      }
     } else {
       setErrorMessage(error);
     }

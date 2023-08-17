@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 import { ROUTES } from "../pages/Constants";
 import Login from "../pages/Login/Login";
 import Registration from "../pages/Registration/Registration";
@@ -31,6 +32,18 @@ const AppRoutes = () => {
 
   const user = getUser();
 
+  const { state } = useContext(AppContext);
+
+  const [userData, setUserData] = useState();
+
+  useEffect(() => {
+    if (state?.user) {
+      setUserData(state);
+    } else if (user) {
+      setUserData(user);
+    }
+  }, [state?.user, user]);
+
   return (
     <BrowserRouter>
       <Box sx={{ width: "100%", height: "100vh", display: "flex" }}>
@@ -38,7 +51,7 @@ const AppRoutes = () => {
           <Route
             path={DASHBOARD_ROUTE}
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute user={userData}>
                 <Dashboard />
               </ProtectedRoute>
             }
@@ -46,7 +59,7 @@ const AppRoutes = () => {
           <Route
             path={PROJECTS_ROUTE}
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute user={userData}>
                 <Project />
               </ProtectedRoute>
             }
@@ -54,7 +67,7 @@ const AppRoutes = () => {
           <Route
             path={PROJECT_ROUTE}
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute user={userData}>
                 <Document />
               </ProtectedRoute>
             }
@@ -62,7 +75,7 @@ const AppRoutes = () => {
           <Route
             path={DOCUMENTS_ROUTE}
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute user={userData}>
                 <Documents />
               </ProtectedRoute>
             }
@@ -71,7 +84,7 @@ const AppRoutes = () => {
             exact
             path={DOCUMENT_ROUTE}
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute user={userData}>
                 <Document />
               </ProtectedRoute>
             }
@@ -80,7 +93,7 @@ const AppRoutes = () => {
             exact
             path={USAGE_ROUTE}
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute user={userData}>
                 <Usage />
               </ProtectedRoute>
             }
@@ -88,7 +101,7 @@ const AppRoutes = () => {
           <Route
             path={PLAN_ROUTE}
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute user={userData}>
                 <Plans />
               </ProtectedRoute>
             }
@@ -96,7 +109,7 @@ const AppRoutes = () => {
           <Route
             path={PROFILE_ROUTE}
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute user={userData}>
                 <Profile />
               </ProtectedRoute>
             }

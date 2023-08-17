@@ -5,4 +5,5 @@ export const StyledTypography = styled(Typography)({
   alignItems: "flext-start",
   marginTop: "2rem",
   lineHeight: "1.5rem",
+  fontWeight: 700,
 });

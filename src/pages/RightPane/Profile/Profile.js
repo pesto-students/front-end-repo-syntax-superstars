@@ -1,8 +1,7 @@
 import { Alert, Avatar, Divider, Grid, Typography } from "@mui/material";
-import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { EDIT_PROFILE_URL } from "../../../apis/apiRoutes";
+import { EDIT_PROFILE_URL, UPLOAD_PIC_URL } from "../../../apis/apiRoutes";
 import {
   PrimaryButton,
   SecondaryButton,
@@ -51,16 +50,13 @@ const Profile = () => {
     formData.append("upload_preset", "ml_default");
 
     try {
-      const response = await axios(
-        `https://cors-anywhere.herokuapp.com/https://api.cloudinary.com/v1_1/dkidv4wxq/image/upload`,
-        {
-          method: "post",
-          data: formData,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await apiCall(UPLOAD_PIC_URL, {
+        method: "post",
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       setImageUrl(response.data.secure_url);
     } catch (error) {
       console.error(error);

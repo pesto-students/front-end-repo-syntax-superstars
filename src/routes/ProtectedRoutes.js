@@ -5,6 +5,7 @@ import LeftPane from "../pages/LeftPane/LeftPane";
 
 function ProtectedRoute({ user, children }) {
   if (!user & !user?.isVerified) {
+    localStorage.clear();
     return <Navigate to="/login" replace />;
   }
   return (

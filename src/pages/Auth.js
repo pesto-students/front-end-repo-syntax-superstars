@@ -26,7 +26,14 @@ const Auth = ({ children, setValue }) => {
     onSuccess: async (tokenResponse) => {
       const res = await axios.get(
         "https://www.googleapis.com/oauth2/v3/userinfo",
-        { headers: { Authorization: `Bearer ${tokenResponse.access_token}` } }
+        {
+          headers: {
+            Authorization: `Bearer ${tokenResponse.access_token}`,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods":
+              "PUT, POST, GET, DELETE, PATCH, OPTIONS",
+          },
+        }
       );
       const response = await apiCall(GOOGLE_LOGIN_URL, {
         method: "post",
@@ -53,7 +60,7 @@ const Auth = ({ children, setValue }) => {
         navigate(ROUTES.DASHBOARD_ROUTE);
       }
     }
-  }, [responseData, navigate, state, user]);
+  }, [responseData, state, user]);
 
   return (
     <Grid container sx={{ height: "100%" }}>

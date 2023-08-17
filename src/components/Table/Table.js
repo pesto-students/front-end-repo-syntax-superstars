@@ -1,18 +1,18 @@
-import React from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   Table as MuiTable,
   TableBody,
   TableHead,
   TableRow,
 } from "@mui/material";
-import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
-import { StyledTableCell } from "./Table.styles";
+import TableContainer from "@mui/material/TableContainer";
+import React from "react";
 import IconButton from "../IconButton/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import { StyledTableCell } from "./Table.styles";
 
-const Table = ({ rows, columns, onDelete }) => {
+const Table = ({ rows, columns, onDelete, onView }) => {
   return (
     <TableContainer component={Paper}>
       <MuiTable sx={{ minWidth: 650 }} aria-label="simple table">
@@ -36,7 +36,7 @@ const Table = ({ rows, columns, onDelete }) => {
                   ) : (
                     <StyledTableCell align="left">
                       <IconButton color="colors.lightGray">
-                        <VisibilityIcon />
+                        <VisibilityIcon onClick={() => onView(row._id)} />
                       </IconButton>
                       <IconButton
                         color="colors.lightGray"

@@ -74,10 +74,10 @@ const Result = () => {
               <Typography variant="subtitle2" color="text.title">
                 Human Score
               </Typography>
-              <StyledTypography variant="h6" color="text.main">
+              <StyledTypography variant="body2" color="text.main">
                 <CheckCircleOutlineSharpIcon />
-                IntelliPlagiarismAI has detected the text as %
-                {reportData?.uniquePercent} human.
+                IntelliPlagiarismAI has detected the text as
+                {reportData?.uniquePercent}% human.
               </StyledTypography>
             </CardContent>
           </Card>
@@ -101,7 +101,7 @@ const Result = () => {
               <Typography variant="subtitle2" color="text.title">
                 Plagiarism
               </Typography>
-              <StyledTypography variant="h6" color="text.main">
+              <StyledTypography variant="body2" color="text.main">
                 <CheckCircleOutlineSharpIcon />
                 IntelliPlagiarismAI has detected the text as{" "}
                 {reportData?.plagPercent}% plagiarised.
@@ -128,7 +128,7 @@ const Result = () => {
               <Typography variant="subtitle2" color="text.title">
                 Readability Score
               </Typography>
-              <StyledTypography variant="h6" color="text.main">
+              <StyledTypography variant="body2" color="text.main">
                 <CheckCircleOutlineSharpIcon />
                 This text has a readability score of{" "}
                 {reportData?.readabilityScore}/100.

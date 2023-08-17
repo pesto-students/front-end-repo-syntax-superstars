@@ -5,15 +5,12 @@ import Dropdown from "../../../components/Dropdown/Dropdown";
 import Loader from "../../../components/Loader/Loader";
 import { SearchTextBox } from "../../../components/TextField/TextBox";
 import useFetch from "../../../hooks/useFetch";
-import { getUser } from "../../../utils";
 import ProjectList from "./ProjectList";
 
 const Project = () => {
   const { loading, error, apiCall } = useFetch();
   const [projectsData, setProjectsData] = useState([]);
   const [name, setName] = useState("");
-
-  const user = getUser();
 
   const getProjects = async (name = "", sort = "") => {
     const response = await apiCall(
@@ -27,9 +24,7 @@ const Project = () => {
 
   const handleChange = (event) => {
     setName(event.target.value);
-    if (event.target.value.length > 3) {
-      getProjects(event.target.value);
-    }
+    getProjects(event.target.value);
   };
 
   const handleClick = (value) => {

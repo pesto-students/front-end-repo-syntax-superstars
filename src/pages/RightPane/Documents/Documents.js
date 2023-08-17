@@ -103,9 +103,7 @@ const Documents = () => {
 
   const handleChange = (event) => {
     setName(event.target.value);
-    if (event.target.value.length > 3) {
-      getDocuments(event.target.value);
-    }
+    getDocuments(event.target.value);
   };
 
   const handleClick = (value) => {

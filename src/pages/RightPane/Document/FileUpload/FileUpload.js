@@ -1,7 +1,7 @@
 import { Box, Grid, Input, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   CREATE_DOCUMENT_URL,
   DELETE_DOCUMENT_URL,
@@ -15,24 +15,42 @@ import { TextBox } from "../../../../components/TextField/TextBox";
 import { AppContext } from "../../../../context/AppContext";
 import useFetch from "../../../../hooks/useFetch";
 import { formatBytes, setUser } from "../../../../utils";
-import { MODAL } from "../../../Constants";
+import { MODAL, ROUTES } from "../../../Constants";
 import { StyledTypography } from "./FileUpload.styles";
 
 const FileUpload = ({ handleScan }) => {
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, setValue } = useForm();
   const { loading, error, apiCall } = useFetch();
-  const { setUserData } = useContext(AppContext);
+  const { setUserData, setDocument, state } = useContext(AppContext);
   const [documentsData, setDocumentsData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [documentId, setDocumentId] = useState("");
-  const { id } = useParams();
+  const { id, docId } = useParams();
+  const navigate = useNavigate();
 
   const getDocuments = async () => {
-    const response = await apiCall(`${GET_DOCUMENTS_URL}?id=${id}&is_file=1`, {
+    const response = await apiCall(
+      `${GET_DOCUMENTS_URL}?id=${id}&is_file=true`,
+      {
+        method: "get",
+      }
+    );
+    if (response && response?.status === 200) {
+      if (response?.data?.length) setDocumentsData(response?.data);
+    }
+  };
+
+  const getDocumentsByDocId = async (id) => {
+    const response = await apiCall(`${GET_DOCUMENTS_URL}/${id}`, {
       method: "get",
     });
     if (response && response?.status === 200) {
-      if (response?.data?.length) setDocumentsData(response?.data);
+      if (documentsData.length === 0) {
+        await getDocuments();
+      }
+      if (response?.data) {
+        setDocument(response?.data);
+      }
     }
   };
 
@@ -45,11 +63,11 @@ const FileUpload = ({ handleScan }) => {
     },
     {
       label: "TYPE",
-      field: "",
+      field: "file_type",
     },
     {
       label: "SIZE",
-      field: "",
+      field: "file_size",
     },
     {
       label: "ACTIONS",
@@ -71,8 +89,8 @@ const FileUpload = ({ handleScan }) => {
       });
 
       if (response?.status === 201) {
-        setUserData(response?.data?.userData);
-        setUser(response?.data?.userData);
+        setUserData(response?.data?.user);
+        setUser(response?.data?.user);
         handleScan(response?.data?.document);
       }
     };
@@ -94,18 +112,33 @@ const FileUpload = ({ handleScan }) => {
     }
   };
 
+  const handleOnView = (documentId) => {
+    const route = ROUTES.DOCUMENT_ROUTE;
+    const path = route.split(/:([a-zA-Z]*)/);
+    navigate(path[0] + id + path[2] + documentId);
+  };
+
   const handleClose = () => {
     setOpenModal(false);
   };
 
   useEffect(() => {
-    getDocuments();
-  }, []);
+    if (docId) {
+      getDocumentsByDocId(docId);
+    }
+  }, [docId]);
+
+  useEffect(() => {
+    if (state?.document && state?.document?.is_file) {
+      setValue("name", state?.document?.name);
+      setValue("author", state?.document?.author);
+    }
+  }, [state?.document]);
 
   return (
     <>
       {loading && <Loader />}
-      <form onSubmit={handleSubmit(handleOnSubmit)} encType="multip">
+      <form onSubmit={handleSubmit(handleOnSubmit)}>
         <Grid container spacing={4} sx={{ marginTop: "0px" }}>
           <Grid item xs={6}>
             <StyledTypography variant="body1" color="secondary.dark">
@@ -180,7 +213,12 @@ const FileUpload = ({ handleScan }) => {
             <Typography variant="subtitle2" color="secondary">
               Documents
             </Typography>
-            <Table rows={rows} columns={columns} onDelete={handleOnDelete} />
+            <Table
+              rows={rows}
+              columns={columns}
+              onDelete={handleOnDelete}
+              onView={handleOnView}
+            />
           </Grid>
         </Grid>
       )}

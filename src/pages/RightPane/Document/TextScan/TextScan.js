@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   CREATE_DOCUMENT_URL,
   DELETE_DOCUMENT_URL,
@@ -16,24 +16,42 @@ import TextArea from "../../../../components/Textarea/TextArea";
 import { AppContext } from "../../../../context/AppContext";
 import useFetch from "../../../../hooks/useFetch";
 import { setUser } from "../../../../utils";
-import { MODAL } from "../../../Constants";
+import { MODAL, ROUTES } from "../../../Constants";
 import { StyledTypography } from "./TextScan.styles";
 
 const TextScan = ({ handleScan }) => {
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, setValue } = useForm();
   const { loading, error, apiCall } = useFetch();
-  const { setUserData } = useContext(AppContext);
-  const [documentsData, setDocumentsData] = useState(null);
+  const { setUserData, setDocument, state } = useContext(AppContext);
+  const [documentsData, setDocumentsData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [documentId, setDocumentId] = useState("");
-  const { id } = useParams();
+  const { id, docId } = useParams();
+  const navigate = useNavigate();
 
   const getDocuments = async () => {
-    const response = await apiCall(`${GET_DOCUMENTS_URL}?id=${id}&is_file=0`, {
+    const response = await apiCall(
+      `${GET_DOCUMENTS_URL}?id=${id}&is_file=false`,
+      {
+        method: "get",
+      }
+    );
+    if (response && response?.status === 200) {
+      if (response?.data?.length) setDocumentsData(response?.data);
+    }
+  };
+
+  const getDocumentsByDocId = async () => {
+    const response = await apiCall(`${GET_DOCUMENTS_URL}/${docId}`, {
       method: "get",
     });
     if (response && response?.status === 200) {
-      if (response?.data?.length) setDocumentsData(response?.data);
+      if (documentsData.length === 0) {
+        await getDocuments();
+      }
+      if (response?.data) {
+        setDocument(response?.data);
+      }
     }
   };
 
@@ -71,10 +89,18 @@ const TextScan = ({ handleScan }) => {
   ];
 
   useEffect(() => {
-    if (!documentsData) {
-      getDocuments();
+    if (docId) {
+      getDocumentsByDocId();
     }
-  }, [documentsData]);
+  }, [docId]);
+
+  useEffect(() => {
+    if (state?.document && state?.document?.is_file === false) {
+      setValue("name", state?.document?.name);
+      setValue("author", state?.document?.author);
+      setValue("text", state?.document?.text);
+    }
+  }, [state?.document]);
 
   const handleOnSubmit = async (values) => {
     values.project = id;
@@ -84,8 +110,8 @@ const TextScan = ({ handleScan }) => {
     });
 
     if (response?.status === 201) {
-      setUserData(response?.data?.userData);
-      setUser(response?.data?.userData);
+      setUserData(response?.data?.user);
+      setUser(response?.data?.user);
       handleScan(response?.data?.document);
     }
   };
@@ -104,6 +130,12 @@ const TextScan = ({ handleScan }) => {
       setOpenModal(false);
       getDocuments();
     }
+  };
+
+  const handleOnView = (documentId) => {
+    const route = ROUTES.DOCUMENT_ROUTE;
+    const path = route.split(/:([a-zA-Z]*)/);
+    navigate(path[0] + id + path[2] + documentId);
   };
 
   const handleClose = () => {
@@ -141,7 +173,12 @@ const TextScan = ({ handleScan }) => {
             <Typography variant="subtitle2" color="secondary">
               Documents
             </Typography>
-            <Table rows={rows} columns={columns} onDelete={handleOnDelete} />
+            <Table
+              rows={rows}
+              columns={columns}
+              onDelete={handleOnDelete}
+              onView={handleOnView}
+            />
           </Grid>
         </Grid>
       )}

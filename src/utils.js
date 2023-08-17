@@ -2,7 +2,8 @@ import moment from "moment";
 
 export const getUser = () => {
   const user = localStorage.getItem("user");
-  if (user !== "") {
+  console.log(user);
+  if (user !== "" && user !== "undefined") {
     return JSON.parse(user);
   }
 };

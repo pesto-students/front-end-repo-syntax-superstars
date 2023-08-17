@@ -3,7 +3,7 @@ export const LOGIN_URL = `/auth/login`;
 export const GOOGLE_LOGIN_URL = `/auth/google-login`;
 export const EDIT_PROFILE_URL = `/auth/edit-profile`;
 export const CHANGE_PASSWORD_URL = `/auth/change-password`;
-export const UPLOAD_PIC_URL = `/auth//upload-profile-pic`;
+export const UPLOAD_PIC_URL = `/auth/upload-profile-pic`;
 
 export const CREATE_PROJECT_URL = `/project/create`;
 export const GET_PROJECTS_URL = `/project/list`;
