@@ -16,7 +16,12 @@ import Card from "../../../components/Card/Card";
 import Loader from "../../../components/Loader/Loader";
 import { AppContext } from "../../../context/AppContext";
 import useFetch from "../../../hooks/useFetch";
-import { getUser, setUser } from "../../../utils";
+import {
+  getUpgragePlan,
+  getUser,
+  setUpgragePlan,
+  setUser,
+} from "../../../utils";
 
 const Plans = () => {
   const { loading, error, apiCall } = useFetch();
@@ -55,6 +60,7 @@ const Plans = () => {
   };
 
   const handleClick = async (plan) => {
+    setUpgragePlan(plan);
     const response = await apiCall(CREATE_SESSION_URL, {
       method: "post",
       data: {
@@ -63,10 +69,7 @@ const Plans = () => {
     });
 
     if (response?.status === 200) {
-      user.plan = plan._id;
-      user.creditsLeft = plan.credits;
-      const res = updatePlan(user);
-      if (res) {
+      if (response) {
         window.location.href = response?.data?.url;
       }
     }
@@ -81,6 +84,10 @@ const Plans = () => {
 
     if (query.get("success")) {
       setMessage("Congratualtions! Successfully Upgrade the Plan.");
+      const plan = getUpgragePlan();
+      user.plan = plan._id;
+      user.creditsLeft = plan.credits;
+      updatePlan(user);
     }
 
     if (query.get("canceled")) {
@@ -104,10 +111,16 @@ const Plans = () => {
           {message && <Alert severity="success">{message}</Alert>}
           {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
         </Grid>
-        <Grid item xs={12} container spacing={4}>
+        <Grid item container spacing={4}>
           {plansData &&
             plansData.map((plan, index) => (
-              <Grid item xs={12} sm={4} key={`plan-${index}`}>
+              <Grid
+                item
+                xs={12}
+                sm={4}
+                key={`plan-${index}`}
+                sx={{ marginBottom: "2rem" }}
+              >
                 <Card
                   styles={{
                     padding: "1.6rem",
@@ -134,13 +147,13 @@ const Plans = () => {
                       sx={{ textAlign: "center", fontWeight: "bold" }}
                       color="text.title"
                     >
-                      {plan.monthly_rate}/month
+                      ${plan.monthly_rate}/month
                     </Typography>
                     <Typography
                       sx={{ textAlign: "center", fontWeight: "bold" }}
                       color="text.main"
                     >
-                      Billed {plan.yearly_rate}/year
+                      Billed ${plan.yearly_rate}/year
                     </Typography>
                     <Typography
                       sx={{ mt: "2.4rem", fontWeight: 700, lineHeight: "2rem" }}

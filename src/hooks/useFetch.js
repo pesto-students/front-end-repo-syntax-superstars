@@ -9,7 +9,6 @@ const useFetch = () => {
     try {
       setLoading(true);
       const res = await instance(url, configObject);
-      console.log(res);
       if (res && res?.data) {
         setLoading(false);
         return res;

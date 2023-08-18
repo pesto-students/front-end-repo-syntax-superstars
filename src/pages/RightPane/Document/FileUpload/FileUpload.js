@@ -1,4 +1,4 @@
-import { Box, Grid, Input, Typography } from "@mui/material";
+import { Alert, Box, Grid, Input, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
@@ -19,12 +19,15 @@ import { MODAL, ROUTES } from "../../../Constants";
 import { StyledTypography } from "./FileUpload.styles";
 
 const FileUpload = ({ handleScan }) => {
-  const { control, handleSubmit, setValue } = useForm();
+  const { control, handleSubmit, setValue, watch } = useForm();
   const { loading, error, apiCall } = useFetch();
   const { setUserData, setDocument, state } = useContext(AppContext);
   const [documentsData, setDocumentsData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [documentId, setDocumentId] = useState("");
+  const [disabled, setDisabled] = useState(true);
+  const [fileName, setFileName] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const { id, docId } = useParams();
   const navigate = useNavigate();
 
@@ -135,6 +138,15 @@ const FileUpload = ({ handleScan }) => {
     }
   }, [state?.document]);
 
+  useEffect(() => {
+    const file = watch("file");
+    if (file) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [watch("file")]);
+
   return (
     <>
       {loading && <Loader />}
@@ -163,7 +175,29 @@ const FileUpload = ({ handleScan }) => {
                       {...field}
                       value={value?.fileName}
                       onChange={(event) => {
-                        onChange(event.target.files[0]);
+                        const selectedFile = event.target.files[0];
+                        const allowedTypes = [
+                          "application/msword",
+                          "text/plain",
+                          "application/pdf",
+                          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                        ];
+                        if (!allowedTypes.includes(selectedFile?.type)) {
+                          setErrorMsg(
+                            "Only .doc, .docx, .pdf, and .txt files are allowed."
+                          );
+                          return;
+                        }
+                        if (event.target.files && event.target.files[0]) {
+                          if (event.target.files[0].size > 1 * 1000 * 1024) {
+                            setErrorMsg(
+                              "File with maximum size of 1MB is allowed"
+                            );
+                            return false;
+                          }
+                        }
+                        onChange(selectedFile);
+                        setFileName(event.target.files[0].name);
                       }}
                       type="file"
                       id="file"
@@ -180,22 +214,29 @@ const FileUpload = ({ handleScan }) => {
                         alignItems: "center",
                       }}
                     >
+                      {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
                       <Typography
                         variant="body1"
                         color="secondary.dark"
                         sx={{ lineHeight: "5rem" }}
                       >
-                        Drag your file here. Accepted file types: .doc, .docx,
-                        .txt
+                        Accepted file types: .doc, .docx, .pdf .txt
                       </Typography>
-
                       <PrimaryButton
                         label="Select File"
                         height="4rem"
-                        onClick={() =>
-                          document.querySelector('input[type="file"]').click()
-                        }
+                        onClick={() => {
+                          setErrorMsg("");
+                          document.querySelector('input[type="file"]').click();
+                        }}
                       />
+                      <Typography
+                        variant="body1"
+                        color="secondary.dark"
+                        sx={{ lineHeight: "5rem" }}
+                      >
+                        {fileName}
+                      </Typography>
                     </Box>
                   </>
                 );
@@ -203,7 +244,12 @@ const FileUpload = ({ handleScan }) => {
             />
           </Grid>
           <Grid item xs={12} sx={{ textAlign: "right" }}>
-            <PrimaryButton type="submit" label="Scan Text" height="4rem" />
+            <PrimaryButton
+              disabled={disabled}
+              type="submit"
+              label="Scan Text"
+              height="4rem"
+            />
           </Grid>
         </Grid>
       </form>

@@ -1,8 +1,8 @@
-import * as React from "react";
 import Paper from "@mui/material/Paper";
-import { StyledMenuItem, StyledMenuList } from "./Menu.styles";
-import { lightTheme } from "../../themes";
+import * as React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { lightTheme } from "../../themes";
+import { StyledMenuItem, StyledMenuList } from "./Menu.styles";
 
 const Menu = ({ menuList }) => {
   const location = useLocation();
@@ -17,7 +17,7 @@ const Menu = ({ menuList }) => {
     >
       <StyledMenuList sx={{ padding: "15px" }}>
         {menuList.map((item, index) => (
-          <Link to={item.url}>
+          <Link to={item.url} key={`menu-${index}`}>
             <StyledMenuItem
               key={`Menu-${index}`}
               selected={item.url === location.pathname}

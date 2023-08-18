@@ -20,12 +20,13 @@ import { MODAL, ROUTES } from "../../../Constants";
 import { StyledTypography } from "./TextScan.styles";
 
 const TextScan = ({ handleScan }) => {
-  const { control, handleSubmit, setValue } = useForm();
+  const { control, handleSubmit, setValue, watch } = useForm();
   const { loading, error, apiCall } = useFetch();
   const { setUserData, setDocument, state } = useContext(AppContext);
   const [documentsData, setDocumentsData] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [documentId, setDocumentId] = useState("");
+  const [disabled, setDisabled] = useState(true);
   const { id, docId } = useParams();
   const navigate = useNavigate();
 
@@ -88,11 +89,11 @@ const TextScan = ({ handleScan }) => {
   useEffect(() => {
     if (documentsData.length === 0) {
       getDocuments();
-      if (docId) {
-        getDocumentsByDocId();
-      }
     }
-  }, [docId, documentsData]);
+    if (docId) {
+      getDocumentsByDocId();
+    }
+  }, [docId]);
 
   useEffect(() => {
     if (state?.document && state?.document?.is_file === false) {
@@ -100,7 +101,20 @@ const TextScan = ({ handleScan }) => {
       setValue("author", state?.document?.author);
       setValue("text", state?.document?.text);
     }
+
+    return () => {
+      setDocument("");
+    };
   }, [state?.document]);
+
+  useEffect(() => {
+    const text = watch("text");
+    if (text) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [watch("text")]);
 
   const handleOnSubmit = async (values) => {
     values.project = id;
@@ -163,7 +177,12 @@ const TextScan = ({ handleScan }) => {
             <TextArea control={control} name="text" />
           </Grid>
           <Grid item xs={12} sx={{ textAlign: "right" }}>
-            <PrimaryButton label="Scan Text" type="submit" height="4rem" />
+            <PrimaryButton
+              disabled={disabled}
+              label="Scan Text"
+              type="submit"
+              height="4rem"
+            />
           </Grid>
         </Grid>
       </form>

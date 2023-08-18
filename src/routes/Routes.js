@@ -29,6 +29,7 @@ const AppRoutes = () => {
     USAGE_ROUTE,
     PLAN_ROUTE,
     PROFILE_ROUTE,
+    REDIRECT_PLAN_ROUTE,
   } = ROUTES;
 
   const user = getUser();
@@ -103,6 +104,15 @@ const AppRoutes = () => {
           <Route
             exact
             path={`${PLAN_ROUTE}`}
+            element={
+              <ProtectedRoute user={userData}>
+                <Plans />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            exact
+            path={`${REDIRECT_PLAN_ROUTE}`}
             element={
               <ProtectedRoute user={userData}>
                 <Plans />

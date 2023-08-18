@@ -17,6 +17,7 @@ export const ROUTES = {
   LOGIN_ROUTE: "/login",
   REGISTER_ROUTE: "/register",
   PROFILE_ROUTE: "/profile",
+  REDIRECT_PLAN_ROUTE: "/plan?*",
 };
 
 export const SIDEBAR = {

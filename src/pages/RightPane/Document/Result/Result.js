@@ -55,7 +55,7 @@ const Result = () => {
     <>
       {loading && <Loader />}
       <Grid container spacing={3}>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <Card styles={cardStyle}>
             <CardContent>
               <Box sx={boxStyle}>
@@ -82,7 +82,7 @@ const Result = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <Card styles={cardStyle}>
             <CardContent>
               <Box sx={boxStyle}>
@@ -109,7 +109,7 @@ const Result = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <Card styles={cardStyle}>
             <CardContent>
               <Box sx={boxStyle}>

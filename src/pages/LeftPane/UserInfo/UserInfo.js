@@ -35,6 +35,7 @@ const UserInfo = () => {
 
   const handleLogout = () => {
     localStorage.clear();
+    sessionStorage.clear();
     setUserData({});
     setAnchorEl(null);
     navigate(ROUTES.LOGIN_ROUTE);
@@ -53,8 +54,10 @@ const UserInfo = () => {
   };
 
   useEffect(() => {
-    getPlanDetail();
-  }, []);
+    if (state?.user) {
+      getPlanDetail();
+    }
+  }, [state?.user]);
 
   const dropdown = () => {
     return (
