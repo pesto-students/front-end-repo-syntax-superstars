@@ -1,4 +1,4 @@
-import { Box, CircularProgress, keyframes, styled } from "@mui/material";
+import { Box, CircularProgress, styled } from "@mui/material";
 
 export const StyledBox = styled(Box)({
   width: "100%",
@@ -11,7 +11,7 @@ export const StyledBox = styled(Box)({
   left: 0,
   background: "rgba(0, 0, 0, 0.834)",
   zIndex: 9999,
-  opacity: 0.9,
+  opacity: 0.5,
   flexDirection: "column",
   color: "white",
 });
