@@ -53,7 +53,15 @@ const TextScan = ({ handleScan }) => {
     }
   };
 
-  const rows = documentsData;
+  const getData = (documents) => {
+    return documents.map((document) => ({
+      ...document,
+      plagPercent: document.reportData[0].plagPercent,
+      humanPercent: document.reportData[0].uniquePercent,
+    }));
+  };
+
+  const rows = getData(documentsData);
 
   const columns = [
     {
@@ -70,11 +78,11 @@ const TextScan = ({ handleScan }) => {
     },
     {
       label: "PALGIARISM",
-      field: "reportData[0].plagPercent",
+      field: "plagPercent",
     },
     {
       label: "HUMAN_SCORE",
-      field: "reportData[0].uniquePercent",
+      field: "humanPercent",
     },
     {
       label: "LANGUAGE",

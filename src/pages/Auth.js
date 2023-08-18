@@ -3,7 +3,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import { Divider, Grid, List, ListItem, Typography } from "@mui/material";
 import { useGoogleLogin } from "@react-oauth/google";
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { GOOGLE_LOGIN_URL } from "../apis/apiRoutes";
 import { ButtonIcon } from "../components/Button/Button";
 import { AppContext } from "../context/AppContext";
@@ -18,6 +18,7 @@ const Auth = ({ children, setValue }) => {
   const navigate = useNavigate();
   const { state, setUserData } = useContext(AppContext);
   const [responseData, setResponse] = useState();
+  const location = useLocation();
 
   const user = getUser();
 
@@ -96,40 +97,44 @@ const Auth = ({ children, setValue }) => {
         alignContent="center"
       >
         <img src={logo} alt="logo" />
-        <Grid
-          item
-          xs={12}
-          container
-          justifyContent="space-between"
-          sx={{ marginTop: "30px" }}
-          columnSpacing={2}
-        >
-          <Grid item xs={6}>
-            <ButtonIcon
-              label="Google"
-              icon={<img src={googleLogo} alt="google" />}
-              onClick={login}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <ButtonIcon
-              label="Guest User"
-              icon={
-                <AccountCircleIcon sx={{ fontSize: "3.5rem !important" }} />
-              }
-              onClick={handleClick}
-            />
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Divider
-            sx={{ width: "100%", alignItems: "center", margin: "20px 0" }}
-          >
-            <Typography color="secondary.dark" variant="h6">
-              OR
-            </Typography>
-          </Divider>
-        </Grid>
+        {location.pathname !== ROUTES.REGISTER_ROUTE && (
+          <>
+            <Grid
+              item
+              xs={12}
+              container
+              justifyContent="space-between"
+              sx={{ marginTop: "30px" }}
+              columnSpacing={2}
+            >
+              <Grid item xs={6}>
+                <ButtonIcon
+                  label="Google"
+                  icon={<img src={googleLogo} alt="google" />}
+                  onClick={login}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <ButtonIcon
+                  label="Guest User"
+                  icon={
+                    <AccountCircleIcon sx={{ fontSize: "3.5rem !important" }} />
+                  }
+                  onClick={handleClick}
+                />
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider
+                sx={{ width: "100%", alignItems: "center", margin: "20px 0" }}
+              >
+                <Typography color="secondary.dark" variant="h6">
+                  OR
+                </Typography>
+              </Divider>
+            </Grid>
+          </>
+        )}
         <Grid item xs={12} container spacing={2}>
           {children}
         </Grid>

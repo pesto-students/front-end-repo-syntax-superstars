@@ -32,7 +32,9 @@ const Table = ({ rows, columns, onDelete, onView }) => {
               {columns.map((cols) => (
                 <>
                   {cols.label !== "ACTIONS" ? (
-                    <StyledTableCell>{row[cols.field]}</StyledTableCell>
+                    <>
+                      <StyledTableCell>{row[cols.field]}</StyledTableCell>
+                    </>
                   ) : (
                     <StyledTableCell align="left">
                       <IconButton color="colors.lightGray">

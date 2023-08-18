@@ -1,3 +1,4 @@
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import {
   Alert,
   Checkbox,
@@ -117,6 +118,7 @@ const Registration = () => {
               label="REGISTER"
               width="100%"
               height="50px"
+              startIcon={<PersonAddIcon />}
             />
           </Grid>
           <Grid

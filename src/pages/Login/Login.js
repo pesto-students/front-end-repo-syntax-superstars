@@ -1,10 +1,5 @@
-import {
-  Alert,
-  Checkbox,
-  FormControlLabel,
-  Grid,
-  Typography,
-} from "@mui/material";
+import InputIcon from "@mui/icons-material/Input";
+import { Alert, Grid, Typography } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -76,22 +71,12 @@ const Login = () => {
             ></TextBox>
           </Grid>
           <Grid item xs={12}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={checked}
-                  onChange={() => setChedcked(!checked)}
-                />
-              }
-              label="Remember me"
-            />
-          </Grid>
-          <Grid item xs={12}>
             <PrimaryButton
               label="LOGIN"
               width="100%"
               height="50px"
               type="submit"
+              endIcon={<InputIcon />}
             />
           </Grid>
           <Grid
