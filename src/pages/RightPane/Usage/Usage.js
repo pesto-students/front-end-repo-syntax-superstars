@@ -1,30 +1,31 @@
-import React, { useEffect, useState } from "react";
+import { Box, CardContent, Grid, Typography } from "@mui/material";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { useForm } from "react-hook-form";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 import {
-  BarChart,
   Bar,
-  XAxis,
-  YAxis,
+  BarChart,
   CartesianGrid,
-  Tooltip,
   Legend,
   ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
-import { Box, CardContent, Grid, Typography } from "@mui/material";
-import Card from "../../../components/Card/Card";
 import { GET_USAGE_URL } from "../../../apis/apiRoutes";
-import { getUser } from "../../../utils";
-import useFetch from "../../../hooks/useFetch";
+import Card from "../../../components/Card/Card";
 import Loader from "../../../components/Loader/Loader";
-import moment from "moment";
+import useFetch from "../../../hooks/useFetch";
+import { getUser } from "../../../utils";
 
 const Usage = () => {
   const { loading, error, apiCall } = useFetch();
   const [data, setData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(moment(new Date()));
+
+  const user = getUser();
 
   const getDocuments = async (date) => {
     const response = await apiCall(`${GET_USAGE_URL}/${date}`, {
@@ -71,9 +72,13 @@ const Usage = () => {
                 Usage
               </Typography>
               <Typography variant="body1" color="secondary.dark">
-                Monthly credtis remaining: 1800
+                Monthly credtis remaining: {user?.creditsLeft}
               </Typography>
-              <Typography variant="body1" color="secondary.dark">
+              <Typography
+                variant="body1"
+                color="secondary.dark"
+                sx={{ display: "none" }}
+              >
                 Top up credits remaining: 0
               </Typography>
               <Box sx={{ padding: "3.5rem 0", textAlign: "center" }}>
