@@ -6,6 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   CREATE_SESSION_URL,
   EDIT_PROFILE_URL,
@@ -29,6 +30,7 @@ const Plans = () => {
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const { setUserData } = useContext(AppContext);
+  const { value } = useParams();
 
   const user = getUser();
 
@@ -80,9 +82,7 @@ const Plans = () => {
   }, []);
 
   useEffect(() => {
-    const query = new URLSearchParams(window.location.search);
-
-    if (query.get("success")) {
+    if (value === "success") {
       setMessage("Congratualtions! Successfully Upgrade the Plan.");
       const plan = getUpgragePlan();
       user.plan = plan._id;
@@ -90,10 +90,10 @@ const Plans = () => {
       updatePlan(user);
     }
 
-    if (query.get("canceled")) {
+    if (value === "canceled") {
       setErrorMessage("Sorry! Subscription Canceled.");
     }
-  }, []);
+  }, [value]);
 
   return (
     <>
