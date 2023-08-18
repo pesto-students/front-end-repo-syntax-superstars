@@ -29,6 +29,7 @@ const Profile = () => {
 
   const handleOnSubmit = async (data) => {
     data.profilePic = imageUrl;
+    data.profilePic = imageUrl;
     const response = await apiCall(`${EDIT_PROFILE_URL}/${user._id}`, {
       method: "put",
       data,
