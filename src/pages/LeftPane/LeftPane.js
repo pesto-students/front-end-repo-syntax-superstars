@@ -11,7 +11,7 @@ import UpgradePlanCard from "./UpgradePlanCard/UpgradePlanCard";
 import UserInfo from "./UserInfo/UserInfo";
 
 const LeftPane = () => {
-  const drawerWidth = "25%";
+  const drawerWidth = "300px";
   const [mobileOpen, setMobileOpen] = useState(false);
   const [credit, setCredit] = useState();
   const { state } = useContext(AppContext);

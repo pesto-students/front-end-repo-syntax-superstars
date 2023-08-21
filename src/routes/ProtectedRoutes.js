@@ -13,7 +13,7 @@ function ProtectedRoute({ user, children }) {
       <LeftPane />
       <Box
         sx={{
-          width: "100%",
+          width: { sm: `calc(100 % -"300px")`, xs: "100%" },
           padding: "30px 60px",
           backgroundColor: "backgroundColor",
         }}

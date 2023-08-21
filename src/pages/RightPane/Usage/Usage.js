@@ -105,6 +105,7 @@ const Usage = () => {
                 >
                   <XAxis
                     dataKey="_id"
+                    scale="point"
                     padding={{ left: 10, right: 10 }}
                     tickFormatter={dateFormatter}
                   />
